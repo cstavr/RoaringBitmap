@@ -1555,7 +1555,7 @@ public final class RunContainer extends Container implements Cloneable {
       this.smartAppend(x.getValue(xrlepos), x.getLength(xrlepos));
       ++xrlepos;
     }
-    return this.toBitmapIfNeeded();
+    return this.toEfficientContainer();
   }
 
   @Override
@@ -1988,7 +1988,7 @@ public final class RunContainer extends Container implements Cloneable {
     if (answer.isFull()) {
       return full();
     }
-    return answer.toBitmapIfNeeded();
+    return answer.toEfficientContainer();
   }
 
   // Prepend a value length with all values starting from a given value
@@ -2295,16 +2295,6 @@ public final class RunContainer extends Container implements Cloneable {
       setLength(nbrruns, (char) (newend - oldend - 1));
       nbrruns++;
     }
-  }
-
-  // convert to bitmap *if needed* (useful if you know it can't be an array)
-  private Container toBitmapIfNeeded() {
-    int sizeAsRunContainer = RunContainer.serializedSizeInBytes(this.nbrruns);
-    int sizeAsBitmapContainer = BitmapContainer.serializedSizeInBytes(0);
-    if (sizeAsBitmapContainer > sizeAsRunContainer) {
-      return this;
-    }
-    return toBitmapContainer();
   }
 
   /**
